@@ -1,0 +1,16 @@
+.popup__close {
+	width: 20px;
+	height: 20px;
+	background-image: url(../../../images/close-icon.svg);
+	position: absolute;
+	top: -28px;
+	right: -28px;
+	cursor: pointer;
+}
+
+@media screen and (max-width: 680px) {
+	.popup__close {
+		top: -36px;
+		right: 0px;
+	}
+}

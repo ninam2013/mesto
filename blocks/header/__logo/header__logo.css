@@ -1,16 +1,16 @@
-.header__logo {    
-    width: 142px;
-    height: 33px;
-    background-image: url(../../../images/logo.svg); 
-    background-repeat: no-repeat;    
+.header__logo {
+	width: 142px;
+	height: 33px;
+	background-image: url(../../../images/logo.svg);
+	background-repeat: no-repeat;
 }
 
-.header__logo:hover {  
-    background-image: url(../../../images/logo-active.svg);    
+.header__logo:hover {
+	background-image: url(../../../images/logo-active.svg);
 }
 
 @media screen and (max-width: 880px) {
-	.header__logo {      
-        margin-left: 27px;
-    }
+	.header__logo {
+		margin-left: 27px;
+	}
 }
