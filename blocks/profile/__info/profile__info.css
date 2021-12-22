@@ -1,5 +1,5 @@
 .profile__info {
-	width: 100%;
+	flex-grow: 1;
 	display: flex;
 	color: #fff;
 	align-items: center;
