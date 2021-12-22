@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link href="pages/index.css" rel="stylesheet">
-  <title>Mesto Russia</title>
+  <title>Места России</title>
 </head>
 
 <body class="body">
@@ -16,27 +16,25 @@
     <main class="main">
       <section class="profile">
         <div class="profile__info">
-          <span class="profile__avatar">
-            <img class="profile__image" src="images/face.jpg" alt="лицо профиля">
-          </span>
+          <img class="profile__image" src="images/face.jpg" alt="лицо профиля">
           <div class="profile__desc">
             <div class="profile__name">
               <h1 class="profile__title">Жак-Ив-Кусто</h1>
-              <button class="profile__button"></button>
+              <button class="profile__button" type="button"></button>
             </div>
             <p class="profile__text">Исследователь океана</p>
           </div>
         </div>
-        <button class="profile__add-button"></button>
+        <button class="profile__add-button" type="button"></button>
       </section>
       <section class="popup">
 
         <div class="popup__container">
-          <div class="popup__close"></div>
+          <button class="popup__close" type="button"></button>
           <h2 class="popup__title">Редактировать профиль</h2>
-          <form class="popup__form">
-            <input class="popup__name-input" type="text">
-            <input class="popup__job-input" type="text">
+          <form class="popup__form" name="form-popup">
+            <input class="popup__input popup__input_name" type="text" name="name">
+            <input class="popup__input popup__input_job" type="text" name="job">
             <button type="submit" class="popup__button">Сохранить</button>
           </form>
 
@@ -48,42 +46,42 @@
             <img class="place__image" src="images/karachaevsk.jpg" alt="старое здание в горах">
             <div class="place__info">
               <h2 class="place__title">Карачаевск</h2>
-              <button class="place__button place__button_active"></button>
+              <button type="button" class="place__button place__button_active"></button>
             </div>
           </li>
           <li class="place">
             <img class="place__image" src="images/elbrus.jpg" alt="гора Эльбрус">
             <div class="place__info">
               <h2 class="place__title">Гора Эльбрус</h2>
-              <button class="place__button"></button>
+              <button type="button" class="place__button"></button>
             </div>
           </li>
           <li class="place">
             <img class="place__image" src="images/dombay.jpg" alt="вид на горы">
             <div class="place__info">
               <h2 class="place__title">Домбай</h2>
-              <button class="place__button"></button>
+              <button type="button" class="place__button"></button>
             </div>
           </li>
           <li class="place">
             <img class="place__image" src="images/elbrus.jpg" alt="Гора Эльбрус">
             <div class="place__info">
               <h2 class="place__title">Гора Эльбрус</h2>
-              <button class="place__button"></button>
+              <button type="button" class="place__button"></button>
             </div>
           </li>
           <li class="place">
             <img class="place__image" src="images/dombay.jpg" alt="вид на горы">
             <div class="place__info">
               <h2 class="place__title">Домбай</h2>
-              <button class="place__button"></button>
+              <button type="button" class="place__button"></button>
             </div>
           </li>
           <li class="place">
             <img class="place__image" src="images/karachaevsk.jpg" alt="старое здание в горах">
             <div class="place__info">
               <h2 class="place__title">Карачаево-Черкессия</h2>
-              <button class="place__button"></button>
+              <button type="button" class="place__button"></button>
             </div>
           </li>
         </ul>

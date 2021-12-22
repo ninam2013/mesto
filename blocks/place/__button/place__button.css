@@ -11,10 +11,9 @@
 	box-sizing: border-box;
 	transition: opacity .8s;
 	margin-right: 20px;
-	overflow: hidden;
 	padding-left: 20px;
 }
 
 .place__button:hover {
-	opacity: .6;
+	opacity: .5;
 }
