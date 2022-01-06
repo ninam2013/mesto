@@ -52,7 +52,7 @@ const profileJob = document.querySelector('.profile__text');
 
 function toggleModal(modal) {
   modal.classList.toggle('popup_open');
-  if (popupEdit.classList.contains('popup_open')) {   // открытие и закрытие модалок (функция)
+  if (popupEdit.classList.contains('popup_open')) {   // открытие и закрытие модалок
     nameInput.value = profileName.textContent;
     jobInput.value = profileJob.textContent;
   }
@@ -91,16 +91,34 @@ popupCardCloseButton.addEventListener('click', () => toggleModal(popupAddCard));
 formElement.addEventListener('submit', formSubmitHandler);
 formCardElement.addEventListener('submit', formSubmitCardHandler);
 
-
+// создание карточек из template
 const placesContainer = document.querySelector('.places__container');
 const placeTemplate = document.querySelector('.place-template').content;
+const placeButtons = document.querySelectorAll('.place__button');
 
+
+// активация сердечка карточки
+function placeButtonActiveState(evt) {
+  if (evt.target.classList.contains('place__button')) {
+    evt.target.classList.toggle('place__button_active');
+  }
+}
+
+
+// работа с карточками
 function createCard(placeData) {
   const placeElement = placeTemplate.cloneNode(true);
+  const placeBasket = placeElement.querySelector('.place__basket');
+  const searchCard = placeBasket.closest('.place');
+
   placeElement.querySelector('.place__image').src = placeData.link;
   placeElement.querySelector('.place__title').textContent = placeData.name;
+  placeElement.querySelector('.place__button').addEventListener('click', placeButtonActiveState);
+  placeBasket.addEventListener('click', () => searchCard.remove());
+
 
   placesContainer.prepend(placeElement);
+
 }
 
 initialCards.forEach(createCard);
