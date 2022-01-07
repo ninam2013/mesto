@@ -29,6 +29,7 @@ const initialCards = [
 // модалки
 const popupEdit = document.querySelector('.popup_type-edit');
 const popupAddCard = document.querySelector('.popup_type_add-card');
+const popupIncreaseCard = document.querySelector('.popup_type_increase-card');      // 1
 
 // формы
 const formElement = popupEdit.querySelector('.popup__form');
@@ -40,6 +41,7 @@ const popupOpenButton = document.querySelector('.profile__button');
 const popupCloseButton = popupEdit.querySelector('.popup__close');
 const popupCardOpenButton = document.querySelector('.profile__add-button');
 const popupCardCloseButton = popupAddCard.querySelector('.popup__close');
+const popupCardCloseButtonIncrease = popupIncreaseCard.querySelector('.popup__close');    // 1
 
 // инпуты
 const nameInput = document.querySelector('.popup__input_js_name');
@@ -50,6 +52,10 @@ const linkCardInput = document.querySelector('.popup__input_js_card-link');
 const profileName = document.querySelector('.profile__title');
 const profileJob = document.querySelector('.profile__text');
 
+const popupCardImage = document.querySelector('.popup__img');    //1
+const popupCardTitle = document.querySelector('.popup__title-card');
+
+
 function toggleModal(modal) {
   modal.classList.toggle('popup_open');
   if (popupEdit.classList.contains('popup_open')) {   // открытие и закрытие модалок
@@ -57,7 +63,6 @@ function toggleModal(modal) {
     jobInput.value = profileJob.textContent;
   }
 }
-
 
 function formSubmitHandler(evt) {
   evt.preventDefault();
@@ -87,6 +92,7 @@ popupOpenButton.addEventListener('click', () => toggleModal(popupEdit));
 popupCloseButton.addEventListener('click', () => toggleModal(popupEdit));
 popupCardOpenButton.addEventListener('click', () => toggleModal(popupAddCard));
 popupCardCloseButton.addEventListener('click', () => toggleModal(popupAddCard));
+popupCardCloseButtonIncrease.addEventListener('click', () => toggleModal(popupIncreaseCard));     // 1
 
 formElement.addEventListener('submit', formSubmitHandler);
 formCardElement.addEventListener('submit', formSubmitCardHandler);
@@ -104,22 +110,35 @@ function placeButtonActiveState(evt) {
   }
 }
 
+function toggleModalCard(e) {
+  popupIncreaseCard.classList.toggle('popup_open');
+  if (popupIncreaseCard.classList.contains('popup_open')) {
+    popupCardImage.src = e.path[0].src
+    popupCardTitle.textContent = e.path[1].innerText
+  }
+
+}
 
 // работа с карточками
 function createCard(placeData) {
   const placeElement = placeTemplate.cloneNode(true);
+  const cardImage = placeElement.querySelector('.place__image');
+  const placeTitle = placeElement.querySelector('.place__title');
   const placeBasket = placeElement.querySelector('.place__basket');
-  const searchCard = placeBasket.closest('.place');
+  // const searchCard = placeBasket.closest('.place');
+  const place = placeElement.querySelector('.place');
 
-  placeElement.querySelector('.place__image').src = placeData.link;
-  placeElement.querySelector('.place__title').textContent = placeData.name;
+  cardImage.src = placeData.link;
+  placeTitle.textContent = placeData.name;
   placeElement.querySelector('.place__button').addEventListener('click', placeButtonActiveState);
-  placeBasket.addEventListener('click', () => searchCard.remove());
+  placeBasket.addEventListener('click', () => place.remove());
 
+  // placeElement.addEventListener('click', () => toggleModal(popupIncreaseCard));      // 1
+  cardImage.addEventListener('click', toggleModalCard);
 
   placesContainer.prepend(placeElement);
 
 }
 
-initialCards.forEach(createCard);
+initialCards.reverse().forEach(createCard);
 
