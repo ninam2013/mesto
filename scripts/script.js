@@ -25,23 +25,23 @@ const initialCards = [
   }
 ];
 
-
 // модалки
-const popupEdit = document.querySelector('.popup_type-edit');
+const popupEditProfile = document.querySelector('.popup_type-edit');
 const popupAddCard = document.querySelector('.popup_type_add-card');
 const popupIncreaseCard = document.querySelector('.popup_type_increase-card');
 
 // формы
-const formElement = popupEdit.querySelector('.popup__form');
+const formEditProfile = popupEditProfile.querySelector('.popup__form');
 const formCardElement = popupAddCard.querySelector('.popup__form');
 
 
 //кнопки
-const popupOpenButton = document.querySelector('.profile__button');
-const popupCloseButton = popupEdit.querySelector('.popup__close');
+const popupProfileOpenButton = document.querySelector('.profile__button');
+const popupProfileCloseButton = popupEditProfile.querySelector('.popup__close');
 const popupCardOpenButton = document.querySelector('.profile__add-button');
 const popupCardCloseButton = popupAddCard.querySelector('.popup__close');
 const popupCardCloseButtonIncrease = popupIncreaseCard.querySelector('.popup__close');
+
 
 // инпуты
 const nameInput = document.querySelector('.popup__input_js_name');
@@ -55,17 +55,35 @@ const profileJob = document.querySelector('.profile__text');
 const popupCardImage = document.querySelector('.popup__img');
 const popupCardTitle = document.querySelector('.popup__title-card');
 
+// открытие и закрытие модалок
 function toggleModal(modal) {
   modal.classList.toggle('popup_open');
+}
 
-  if (popupEdit.classList.contains('popup_open')) {   // открытие и закрытие модалок
+
+// подсказка последнего введенного значения
+function popupChangeProfile() {
+  if (popupEditProfile.classList.contains('popup_open')) {
     nameInput.value = profileName.textContent;
     jobInput.value = profileJob.textContent;
-    popupEdit.clearTimeout
   }
 }
 
-function formSubmitHandler(evt) {
+
+function popupCardOpen(evt) {
+  const cardElement = evt.target.closest('.place');
+  const cardTitle = cardElement.querySelector('.place__title').textContent;
+
+  popupCardImage.src = evt.target.src;
+  popupCardImage.alt = 'увеличенное фото ' + cardTitle;
+  popupCardTitle.textContent = cardTitle;
+
+  toggleModal(popupIncreaseCard)
+}
+
+
+// работа с формами
+function handleProfileFormSubmit(evt) {
   evt.preventDefault();
 
   const nameValue = nameInput.value;
@@ -73,11 +91,12 @@ function formSubmitHandler(evt) {
 
   profileName.textContent = nameValue;
   profileJob.textContent = jobValue;
-  popupEdit.classList.remove('popup_open');
 
+  toggleModal(popupEditProfile);
 }
 
-function formSubmitCardHandler(evt) {
+
+function handleCardFormSubmit(evt) {
   evt.preventDefault();
 
   createCard({
@@ -85,58 +104,63 @@ function formSubmitCardHandler(evt) {
     link: linkCardInput.value
   });
 
-  popupAddCard.classList.remove('popup_open');
+  nameCardInput.value = ' ';
+  linkCardInput.value = ' ';
+
+  toggleModal(popupAddCard);
 }
 
+
 // открытие и закрытие модалок
-popupOpenButton.addEventListener('click', () => toggleModal(popupEdit));
-popupCloseButton.addEventListener('click', () => toggleModal(popupEdit));
+popupProfileOpenButton.addEventListener('click', () => toggleModal(popupEditProfile));
+popupProfileOpenButton.addEventListener('click', () => popupChangeProfile());
+popupProfileCloseButton.addEventListener('click', () => toggleModal(popupEditProfile));
 popupCardOpenButton.addEventListener('click', () => toggleModal(popupAddCard));
 popupCardCloseButton.addEventListener('click', () => toggleModal(popupAddCard));
 popupCardCloseButtonIncrease.addEventListener('click', () => toggleModal(popupIncreaseCard));
 
-formElement.addEventListener('submit', formSubmitHandler);
-formCardElement.addEventListener('submit', formSubmitCardHandler);
+formEditProfile.addEventListener('submit', handleProfileFormSubmit);
+formCardElement.addEventListener('submit', handleCardFormSubmit);
 
 // создание карточек из template
 const placesContainer = document.querySelector('.places__container');
 const placeTemplate = document.querySelector('.place-template').content;
-const placeButtons = document.querySelectorAll('.place__button');
 
 
 // активация сердечка карточки
 function placeButtonActiveState(evt) {
-  if (evt.target.classList.contains('place__button')) {
-    evt.target.classList.toggle('place__button_active');
-  }
+  evt.target.classList.toggle('place__button_active');
 }
 
-function toggleModalCard(evt) {
-  popupIncreaseCard.classList.toggle('popup_open');
 
-  if (popupIncreaseCard.classList.contains('popup_open')) {
-    popupCardImage.src = evt.target.attributes.src.nodeValue;
-    popupCardTitle.textContent = evt.target.nextElementSibling.innerText;
-  }
+function getNewCardElement(item) {
+  const cardElement = placeTemplate.querySelector('.place').cloneNode(true);
+  const cardImage = cardElement.querySelector('.place__image');
+  const placeTitle = cardElement.querySelector('.place__title');
+
+  cardImage.src = item.link;
+  placeTitle.textContent = item.name;
+
+  cardImage.addEventListener('click', popupCardOpen);
+
+  cardElement
+    .querySelector('.place__button')
+    .addEventListener('click', placeButtonActiveState);
+
+  cardElement
+    .querySelector('.place__basket')
+    .addEventListener(
+      'click',
+      () => cardElement.remove()
+    );
+
+  return cardElement
 }
 
-// работа с карточками
+
 function createCard(placeData) {
-  const placeElement = placeTemplate.cloneNode(true);
-  const cardImage = placeElement.querySelector('.place__image');
-  const placeTitle = placeElement.querySelector('.place__title');
-  const placeBasket = placeElement.querySelector('.place__basket');
-  const place = placeElement.querySelector('.place');
-
-  cardImage.src = placeData.link;
-  placeTitle.textContent = placeData.name;
-  placeElement.querySelector('.place__button').addEventListener('click', placeButtonActiveState);
-  placeBasket.addEventListener('click', () => place.remove());
-
-  cardImage.addEventListener('click', toggleModalCard);
-
+  const placeElement = getNewCardElement(placeData)
   placesContainer.prepend(placeElement);
-
 }
 
 initialCards.reverse().forEach(createCard);
