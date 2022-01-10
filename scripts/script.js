@@ -62,21 +62,18 @@ function toggleModal(modal) {
 
 
 // подсказка последнего введенного значения
-function popupChangeProfile() {
-  if (popupEditProfile.classList.contains('popup_open')) {
-    nameInput.value = profileName.textContent;
-    jobInput.value = profileJob.textContent;
-  }
+function openProfilePopup() {
+  nameInput.value = profileName.textContent;
+  jobInput.value = profileJob.textContent;
+
+  toggleModal(popupEditProfile)
 }
 
-
-function popupCardOpen(evt) {
-  const cardElement = evt.target.closest('.place');
-  const cardTitle = cardElement.querySelector('.place__title').textContent;
-
-  popupCardImage.src = evt.target.src;
-  popupCardImage.alt = 'увеличенное фото ' + cardTitle;
-  popupCardTitle.textContent = cardTitle;
+// создание popup карты
+function openImagePopup(cardImage, placeTitle) {
+  popupCardImage.src = cardImage.src;
+  popupCardImage.alt = cardImage.alt;
+  popupCardTitle.textContent = placeTitle.textContent;
 
   toggleModal(popupIncreaseCard)
 }
@@ -112,8 +109,7 @@ function handleCardFormSubmit(evt) {
 
 
 // открытие и закрытие модалок
-popupProfileOpenButton.addEventListener('click', () => toggleModal(popupEditProfile));
-popupProfileOpenButton.addEventListener('click', () => popupChangeProfile());
+popupProfileOpenButton.addEventListener('click', () => openProfilePopup());
 popupProfileCloseButton.addEventListener('click', () => toggleModal(popupEditProfile));
 popupCardOpenButton.addEventListener('click', () => toggleModal(popupAddCard));
 popupCardCloseButton.addEventListener('click', () => toggleModal(popupAddCard));
@@ -128,7 +124,7 @@ const placeTemplate = document.querySelector('.place-template').content;
 
 
 // активация сердечка карточки
-function placeButtonActiveState(evt) {
+function toggleLike(evt) {
   evt.target.classList.toggle('place__button_active');
 }
 
@@ -139,13 +135,15 @@ function getNewCardElement(item) {
   const placeTitle = cardElement.querySelector('.place__title');
 
   cardImage.src = item.link;
+  cardImage.alt = 'карточка ' + item.name;
   placeTitle.textContent = item.name;
 
-  cardImage.addEventListener('click', popupCardOpen);
+
+  cardImage.addEventListener('click', () => openImagePopup(cardImage, placeTitle));
 
   cardElement
     .querySelector('.place__button')
-    .addEventListener('click', placeButtonActiveState);
+    .addEventListener('click', toggleLike);
 
   cardElement
     .querySelector('.place__basket')
