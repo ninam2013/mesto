@@ -101,8 +101,8 @@ function handleCardFormSubmit(evt) {
     link: linkCardInput.value
   });
 
-  nameCardInput.value = ' ';
-  linkCardInput.value = ' ';
+  nameCardInput.value = '';
+  linkCardInput.value = '';
 
   toggleModal(popupAddCard);
 }
