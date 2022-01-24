@@ -20,10 +20,14 @@ popup изменения профиля.
 * Карточки можно лайкать достаточно нажать на сердечко. Это было реализовано при помощи интерфейса event и нажатия обработчика события addEventListener('click').
 * Карточку можно удалить нажав на иконку корзины. При нажатии срабатывает обработчик события addEventListener('click') и при помощи метода remove() удаляется нужная карточка.
 * Нажав на картинку карточки можно отдельно увидеть картинку с названием. Для этого были применены: обработчик события addEventListener('click'), интерфейс event.
+* Сделана валидация форм с использыванием стандартных браузерных текстов ошибок.
+* Добавлено закрытие модальных окон с помощью кнопки Esc и нажатия на оверлей.
 
 
 **Ссылки**
 
-* [Ссылка на макет в Figma](https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1)
+* [Ссылка на макет в Figma (вёрстка)](https://www.figma.com/file/2cn9N9jSkmxD84oJik7xL7/JavaScript.-Sprint-4?node-id=0%3A1)
+* [Ссылка на макет в Figma (JS часть 1)](https://www.figma.com/file/bjyvbKKJN2naO0ucURl2Z0/JavaScript.-Sprint-5?node-id=0%3A1)
+* [Ссылка на макет в Figma (JS часть 2)](https://www.figma.com/file/kRVLKwYG3d1HGLvh7JFWRT/JavaScript.-Sprint-6?node-id=0%3A1)
 
 * [Ссылка на страницу](https://ninam2013.github.io/mesto/)
