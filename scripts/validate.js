@@ -5,55 +5,61 @@ function submitForm(event) {
 
 
 // добавление ошибки
-function showError(inputElement, errorElement, errorText, classes) {
-  inputElement.classList.add(classes.inputErrorClass);
-  errorElement.classList.add(classes.errorClass);
+function showError(inputElement, errorElement, errorText, config) {
+  inputElement.classList.add(config.inputErrorClass);
+  errorElement.classList.add(config.errorClass);
   errorElement.textContent = errorText;
 }
 
 
 
 // удаление ошибки
-function hideError(inputElement, errorElement, classes) {
-  inputElement.classList.remove(classes.inputErrorClass);
-  errorElement.classList.remove(classes.errorClass);
+function hideError(inputElement, errorElement, config) {
+  inputElement.classList.remove(config.inputErrorClass);
+  errorElement.classList.remove(config.errorClass);
   errorElement.textContent = '';
 }
 
 
 
 // Проверка корректности поля
-function toggleButton(formElement, classes) {
-  const button = formElement.querySelector(classes.submitButtonSelector);
-  const isFormValid = formElement.checkValidity();
+function isFormValid(formElement) {
+  return formElement.checkValidity();
+}
 
-  if (isFormValid) {
-    enableButton(button, classes)
+
+
+// Открытие и закрытие кнопки ввода формы
+function toggleButton(formElement, config) {
+  const button = formElement.querySelector(config.submitButtonSelector);
+
+  if (isFormValid(formElement)) {
+    enableButton(button, config)
   } else {
-    disableButton(button, classes)
+    disableButton(button, config)
   }
 }
 
 
 
 // включение кнопки формы
-function enableButton(button, classes) {
-  button.classList.remove(classes.inactiveButtonClass);
+function enableButton(button, config) {
+  button.classList.remove(config.inactiveButtonClass);
   button.disabled = false;
 }
 
 
 
 // выключение кнопки формы
-function disableButton(button, classes) {
-  button.classList.add(classes.inactiveButtonClass);
+function disableButton(button, config) {
+  button.classList.add(config.inactiveButtonClass);
   button.disabled = true;
 }
 
 
 
 // проверка валидации поля
-function validateInput(formElement, inputElement, classes) {
+function validateInput(formElement, inputElement, config) {
   const errorElement = formElement.querySelector(`.${inputElement.id}-error`);
 
   const isValid = inputElement.validity.valid;
@@ -62,36 +68,40 @@ function validateInput(formElement, inputElement, classes) {
 
 
   if (isValid) {
-    hideError(inputElement, errorElement, classes);
+    hideError(inputElement, errorElement, config);
   } else {
-    showError(inputElement, errorElement, errorText, classes);
+    showError(inputElement, errorElement, errorText, config);
   }
-  toggleButton(formElement, classes);
+  toggleButton(formElement, config);
 }
 
 
 
-// перебераем формы и поля, и вызываем функции валидации
-function enableValidation({ formSelector, inputSelector, ...classes }) {
+// перебираем поля и вызываем функцию валидации полей
+function setEventListeners(formElement, inputSelector, config) {
 
-  popupCardImage.closest('.popup__container-card').addEventListener('click', (e) => e.stopPropagation());
+  const inputs = formElement.querySelectorAll(inputSelector);
+
+  inputs.forEach(inputElement => {
+
+    inputElement.addEventListener('input', () => {
+
+      validateInput(formElement, inputElement, config);
+    });
+  });
+  toggleButton(formElement, config);
+}
+
+
+
+// перебераем формы и вызываем функции валидации
+function enableValidation({ formSelector, inputSelector, ...config }) {
 
   const forms = document.querySelectorAll(formSelector);
 
   forms.forEach(formElement => {
     formElement.addEventListener('submit', submitForm);
 
-    const inputs = formElement.querySelectorAll(inputSelector);
-
-    formElement.closest('.popup__container').addEventListener('click', (e) => e.stopPropagation());
-
-    inputs.forEach(inputElement => {
-
-      inputElement.addEventListener('input', () => {
-
-        validateInput(formElement, inputElement, classes);
-      });
-    });
-    toggleButton(formElement, classes);
+    setEventListeners(formElement, inputSelector, config);
   });
 }

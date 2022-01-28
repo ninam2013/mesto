@@ -1,32 +1,5 @@
-const initialCards = [
-  {
-    name: 'Архыз',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
-  },
-  {
-    name: 'Челябинская область',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
-  },
-  {
-    name: 'Иваново',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
-  },
-  {
-    name: 'Камчатка',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
-  },
-  {
-    name: 'Холмогорский район',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
-  },
-  {
-    name: 'Байкал',
-    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
-  }
-];
 
-
-const classes = {
+const config = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__button',
@@ -67,23 +40,35 @@ const popupCardTitle = document.querySelector('.popup__title-card');
 
 
 
-// открытие и закрытие модалок
-function toggleModal(modal) {
-  modal.classList.toggle('popup_open');
+// открытие модалки
+function openModal(modal) {
+  modal.classList.add('popup_open');
+  document.addEventListener('keyup', (evt) => closeModalEsc(evt, modal));
 }
 
 
+
+// закрытие модалки
+function closeModal(modal) {
+  modal.classList.remove('popup_open');
+  document.removeEventListener('keyup', (evt) => closeModalEsc(evt, modal));
+}
+
+
+
 // закрытие модалки Esc
-function closeModalEsc(evt, modal) {           //1
+function closeModalEsc(evt, modal) {
   const key = evt.keyCode;
-  if (key == 27) {
-    modal.classList.remove('popup_open');
+  const keyEsc = 27;
+  if (key == keyEsc) {
+    closeModal(modal)
   };
 }
 
 
+
 // закрытие модалки кликом на оверлей
-function closeModalOverlay(modal) {             //1
+function closeModalOverlay(modal) {
   modal.classList.remove('popup_open');
 }
 
@@ -95,7 +80,7 @@ function openImagePopup(cardImage, placeTitle) {
   popupCardImage.alt = cardImage.alt;
   popupCardTitle.textContent = placeTitle.textContent;
 
-  toggleModal(popupIncreaseCard)
+  openModal(popupIncreaseCard)
 }
 
 
@@ -110,8 +95,9 @@ function handleProfileFormSubmit(evt) {
   profileName.textContent = nameValue;
   profileJob.textContent = jobValue;
 
-  toggleModal(popupEditProfile);
+  closeModal(popupEditProfile);
 }
+
 
 
 function handleCardFormSubmit(evt) {
@@ -125,38 +111,26 @@ function handleCardFormSubmit(evt) {
   nameCardInput.value = '';
   linkCardInput.value = '';
 
-  disableButton(popuButton, classes);
+  disableButton(popuButton, config);
 
-  toggleModal(popupAddCard);
+  closeModal(popupAddCard);
 }
 
-
-// открытие и закрытие модалок
-popupProfileOpenButton.addEventListener('click', () => toggleModal(popupEditProfile));
-popupProfileCloseButton.addEventListener('click', () => toggleModal(popupEditProfile));
-window.addEventListener('keyup', (evt) => closeModalEsc(evt, popupEditProfile));       //1
-popupEditProfile.addEventListener('click', () => closeModalOverlay(popupEditProfile));   //1
-popupCardOpenButton.addEventListener('click', () => toggleModal(popupAddCard));
-popupCardCloseButton.addEventListener('click', () => toggleModal(popupAddCard));
-window.addEventListener('keyup', (evt) => closeModalEsc(evt, popupAddCard));               //1
-popupAddCard.addEventListener('click', () => closeModalOverlay(popupAddCard));                        //1
-popupCardCloseButtonIncrease.addEventListener('click', () => toggleModal(popupIncreaseCard));
-window.addEventListener('keyup', (evt) => closeModalEsc(evt, popupIncreaseCard));       //1
-popupIncreaseCard.addEventListener('click', () => closeModalOverlay(popupIncreaseCard));   //1
-
-formEditProfile.addEventListener('submit', handleProfileFormSubmit);
-formCardElement.addEventListener('submit', handleCardFormSubmit);
-
-
-// создание карточек из template
-const placesContainer = document.querySelector('.places__container');
-const placeTemplate = document.querySelector('.place-template').content;
 
 
 // активация сердечка карточки
 function toggleLike(evt) {
   evt.target.classList.toggle('place__button_active');
 }
+
+
+
+// активация сердечка карточки
+function removeCard(cardElement) {
+  cardElement.remove('place');
+}
+
+
 
 // создание новой карточки, вызов открытия модалки карточки, нажатия like и удаление карточки
 function getNewCardElement(item) {
@@ -179,11 +153,13 @@ function getNewCardElement(item) {
     .querySelector('.place__basket')
     .addEventListener(
       'click',
-      () => cardElement.remove()
+      () => removeCard(cardElement)
     );
 
   return cardElement
 }
+
+
 
 // добавление новой карточки
 function createCard(placeData) {
@@ -191,11 +167,44 @@ function createCard(placeData) {
   placesContainer.prepend(placeElement);
 }
 
-initialCards.reverse().forEach(createCard);
 
+
+// остановка всплытия события клик
+function stopFormsClickPropagation() {
+
+  document.querySelectorAll('.popup__container').forEach(popupElement => {
+
+    popupElement.addEventListener('click', (e) => e.stopPropagation());
+  })
+}
+
+stopFormsClickPropagation()
+
+
+
+// открытие и закрытие модалок
+popupProfileOpenButton.addEventListener('click', () => openModal(popupEditProfile));
+popupProfileCloseButton.addEventListener('click', () => closeModal(popupEditProfile));
+popupEditProfile.addEventListener('click', () => closeModalOverlay(popupEditProfile));
+popupCardOpenButton.addEventListener('click', () => openModal(popupAddCard));
+popupCardCloseButton.addEventListener('click', () => closeModal(popupAddCard));
+popupAddCard.addEventListener('click', () => closeModalOverlay(popupAddCard));
+popupCardCloseButtonIncrease.addEventListener('click', () => closeModal(popupIncreaseCard));
+popupIncreaseCard.addEventListener('click', () => closeModalOverlay(popupIncreaseCard));
+
+// навешиваем обработчики событий при отправке формы
+formEditProfile.addEventListener('submit', handleProfileFormSubmit);
+formCardElement.addEventListener('submit', handleCardFormSubmit);
+
+// создание карточек из template
+const placesContainer = document.querySelector('.places__container');
+const placeTemplate = document.querySelector('.place-template').content;
+
+
+initialCards.reverse().forEach(createCard);
 
 
 nameInput.value = profileName.textContent;
 jobInput.value = profileJob.textContent;
 
-enableValidation(classes);
+enableValidation(config);
