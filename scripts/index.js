@@ -8,6 +8,7 @@ const config = {
   errorClass: 'popup__error_visible'
 };
 
+const KEY_ESC = 27;
 
 // модалки
 const popupEditProfile = document.querySelector('.popup_type-edit');
@@ -59,8 +60,8 @@ function closeModal(modal) {
 // закрытие модалки Esc
 function closeModalEsc(evt, modal) {
   const key = evt.keyCode;
-  const keyEsc = 27;
-  if (key == keyEsc) {
+
+  if (key == KEY_ESC) {
     closeModal(modal)
   };
 }
@@ -173,7 +174,6 @@ function createCard(placeData) {
 function stopFormsClickPropagation() {
 
   document.querySelectorAll('.popup__container').forEach(popupElement => {
-
     popupElement.addEventListener('click', (e) => e.stopPropagation());
   })
 }
