@@ -1,3 +1,32 @@
+import { Card } from './Сard.js';
+import { FormValidator } from './FormValidator.js';
+
+const initialCards = [
+  {
+    name: 'Архыз',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
+  },
+  {
+    name: 'Челябинская область',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/chelyabinsk-oblast.jpg'
+  },
+  {
+    name: 'Иваново',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/ivanovo.jpg'
+  },
+  {
+    name: 'Камчатка',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kamchatka.jpg'
+  },
+  {
+    name: 'Холмогорский район',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/kholmogorsky-rayon.jpg'
+  },
+  {
+    name: 'Байкал',
+    link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/baikal.jpg'
+  }
+];
 
 const config = {
   formSelector: '.popup__form',
@@ -9,6 +38,10 @@ const config = {
 };
 
 const KEY_ESC = 27;
+
+
+// контейнер с карточками
+const placesContainer = document.querySelector('.places__container');
 
 // модалки
 const popupEditProfile = document.querySelector('.popup_type-edit');
@@ -38,6 +71,13 @@ const profileJob = document.querySelector('.profile__text');
 
 const popupCardImage = document.querySelector('.popup__img');
 const popupCardTitle = document.querySelector('.popup__title-card');
+
+
+const editFormValidator = new FormValidator(config, formEditProfile);
+const cardFormValidator = new FormValidator(config, formCardElement);
+
+editFormValidator.enableValidation();
+cardFormValidator.enableValidation();
 
 
 
@@ -76,7 +116,7 @@ function closeModalOverlay(modal) {
 
 
 // создание popup карты
-function openImagePopup(cardImage, placeTitle) {
+export function openImagePopup(cardImage, placeTitle) {
   popupCardImage.src = cardImage.src;
   popupCardImage.alt = cardImage.alt;
   popupCardTitle.textContent = placeTitle.textContent;
@@ -112,62 +152,20 @@ function handleCardFormSubmit(evt) {
   nameCardInput.value = '';
   linkCardInput.value = '';
 
-  disableButton(popuButton, config);
+  cardFormValidator.disableButton(popuButton);
 
   closeModal(popupAddCard);
 }
 
 
 
-// активация сердечка карточки
-function toggleLike(evt) {
-  evt.target.classList.toggle('place__button_active');
-}
-
-
-
-// активация сердечка карточки
-function removeCard(cardElement) {
-  cardElement.remove('place');
-}
-
-
-
-// создание новой карточки, вызов открытия модалки карточки, нажатия like и удаление карточки
-function getNewCardElement(item) {
-  const cardElement = placeTemplate.querySelector('.place').cloneNode(true);
-  const cardImage = cardElement.querySelector('.place__image');
-  const placeTitle = cardElement.querySelector('.place__title');
-
-  cardImage.src = item.link;
-  cardImage.alt = 'карточка ' + item.name;
-  placeTitle.textContent = item.name;
-
-
-  cardImage.addEventListener('click', () => openImagePopup(cardImage, placeTitle));
-
-  cardElement
-    .querySelector('.place__button')
-    .addEventListener('click', toggleLike);
-
-  cardElement
-    .querySelector('.place__basket')
-    .addEventListener(
-      'click',
-      () => removeCard(cardElement)
-    );
-
-  return cardElement
-}
-
-
-
 // добавление новой карточки
-function createCard(placeData) {
-  const placeElement = getNewCardElement(placeData)
-  placesContainer.prepend(placeElement);
-}
+function createCard(data) {
 
+  const placeElement = new Card(data, '.place-template');
+  const cardElement = placeElement.getNewCardElement();
+  placesContainer.prepend(cardElement);
+}
 
 
 // остановка всплытия события клик
@@ -196,15 +194,9 @@ popupIncreaseCard.addEventListener('click', () => closeModalOverlay(popupIncreas
 formEditProfile.addEventListener('submit', handleProfileFormSubmit);
 formCardElement.addEventListener('submit', handleCardFormSubmit);
 
-// создание карточек из template
-const placesContainer = document.querySelector('.places__container');
-const placeTemplate = document.querySelector('.place-template').content;
-
 
 initialCards.reverse().forEach(createCard);
 
 
 nameInput.value = profileName.textContent;
 jobInput.value = profileJob.textContent;
-
-enableValidation(config);
