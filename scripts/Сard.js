@@ -25,16 +25,21 @@ export class Card {
     cardImage.alt = 'карточка ' + this._name;
     placeTitle.textContent = this._name;
 
-    this._setOpenImagePopup(cardImage, placeTitle)
-    this._setLikeHandler(element);
-    this._setRemoveCardHandler(element);
+    this._setEventListeners(cardImage, placeTitle, element)
 
     return element;
   }
 
 
 
-  _setOpenImagePopup(cardImage, placeTitle) {                                              //???
+  _setEventListeners(cardImage, placeTitle, element) {
+    this._setOpenImagePopup(cardImage, placeTitle)
+    this._setLikeHandler(element);
+    this._setRemoveCardHandler(element);
+  }
+
+
+  _setOpenImagePopup(cardImage, placeTitle) {
     cardImage.addEventListener('click', () => openImagePopup(cardImage, placeTitle));
   }
 

@@ -4,9 +4,11 @@ export class FormValidator {
     this._config = config;
   }
 
+
   _submitForm(event) {
     event.preventDefault();
   }
+
 
   // Открытие и закрытие кнопки ввода формы
   _toggleButton() {
@@ -19,10 +21,15 @@ export class FormValidator {
     }
   }
 
+
+
   // Проверка корректности поля
   _isFormValid() {
     return this._form.checkValidity();
+
   }
+
+
 
   // включение кнопки формы
   _enableButton(button) {
@@ -65,10 +72,8 @@ export class FormValidator {
 
     const errorText = inputElement.validationMessage;
 
-
     if (isValid) {
       this._hideError(inputElement, errorElement);
-
     } else {
       this._showError(inputElement, errorElement, errorText);
     }
@@ -85,10 +90,10 @@ export class FormValidator {
     this._inputs.forEach(inputElement => {
 
       inputElement.addEventListener('input', () => {
-
         this._validateInput(inputElement);
       });
     });
+    this._toggleButton(this._form);
   }
 
 
