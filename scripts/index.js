@@ -172,7 +172,7 @@ function handleCardFormSubmit(evt) {
   nameCardInput.value = '';
   linkCardInput.value = '';
 
-  cardFormValidator._disableButton(popuButton);
+  cardFormValidator.disableButton(popuButton);
 
   closeModal(popupAddCard);
 }

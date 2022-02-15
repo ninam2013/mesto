@@ -17,7 +17,7 @@ export class FormValidator {
     if (this._isFormValid(this._form)) {
       this._enableButton(button)
     } else {
-      this._disableButton(button)
+      this.disableButton(button)
     }
   }
 
@@ -40,7 +40,7 @@ export class FormValidator {
 
 
   // выключение кнопки формы
-  _disableButton(button) {
+  disableButton(button) {
     button.classList.add(this._config.inactiveButtonClass);
     button.disabled = true;
   }
