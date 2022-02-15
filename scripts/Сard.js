@@ -33,7 +33,7 @@ export class Card {
 
 
   _setEventListeners(cardImage, placeTitle, element) {
-    this._setOpenImagePopup(cardImage, placeTitle)
+    this._setOpenImagePopup(cardImage, placeTitle);
     this._setLikeHandler(element);
     this._setRemoveCardHandler(element);
   }

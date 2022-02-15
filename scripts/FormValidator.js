@@ -11,13 +11,13 @@ export class FormValidator {
 
 
   // Открытие и закрытие кнопки ввода формы
-  _toggleButton() {
+  toggleButton() {
     const button = this._form.querySelector(this._config.submitButtonSelector);
 
     if (this._isFormValid(this._form)) {
       this._enableButton(button)
     } else {
-      this.disableButton(button)
+      this._disableButton(button)
     }
   }
 
@@ -40,7 +40,7 @@ export class FormValidator {
 
 
   // выключение кнопки формы
-  disableButton(button) {
+  _disableButton(button) {
     button.classList.add(this._config.inactiveButtonClass);
     button.disabled = true;
   }
@@ -77,7 +77,7 @@ export class FormValidator {
     } else {
       this._showError(inputElement, errorElement, errorText);
     }
-    this._toggleButton(this._form);
+    this.toggleButton(this._form);
 
   }
 
@@ -93,7 +93,7 @@ export class FormValidator {
         this._validateInput(inputElement);
       });
     });
-    this._toggleButton(this._form);
+    this.toggleButton(this._form);
   }
 
 
