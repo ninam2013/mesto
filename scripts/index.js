@@ -1,7 +1,9 @@
 import { Card } from './Сard.js';
+import { Section } from './Section.js';
+import { Popup, KEY_ESC } from './Popup.js';
 import { FormValidator } from './FormValidator.js';
 
-const initialCards = [
+export const initialCards = [
   {
     name: 'Архыз',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
@@ -37,8 +39,6 @@ const config = {
   errorClass: 'popup__error_visible'
 };
 
-const KEY_ESC = 27;
-
 
 // контейнер с карточками
 const placesContainer = document.querySelector('.places__container');
@@ -46,7 +46,7 @@ const placesContainer = document.querySelector('.places__container');
 // модалки
 const popupEditProfile = document.querySelector('.popup_type-edit');
 const popupAddCard = document.querySelector('.popup_type_add-card');
-const popupIncreaseCard = document.querySelector('.popup_type_increase-card');
+// const popupIncreaseCard = document.querySelector('.popup_type_increase-card');
 
 // формы
 const formEditProfile = popupEditProfile.querySelector('.popup__form');
@@ -78,55 +78,6 @@ cardFormValidator.enableValidation();
 
 
 
-// открытие модалки
-function openModal(modal) {
-  modal.classList.add('popup_open');
-
-  document.addEventListener('keydown', closeModalEsc);
-}
-
-
-
-// закрытие модалки
-function closeModal(modal) {
-  modal.classList.remove('popup_open');
-  document.removeEventListener('keydown', closeModalEsc);
-}
-
-
-
-// закрытие модалки Esc
-function closeModalEsc(evt) {
-  const key = evt.keyCode;
-
-  if (key == KEY_ESC) {
-    const openPopup = document.querySelector('.popup_open');
-    closeModal(openPopup)
-  };
-}
-
-
-// закрытие модалки на кресик и оверлей
-function closeModalItem() {
-  const popups = document.querySelectorAll('.popup')
-
-  popups.forEach((popup) => {
-
-    popup.addEventListener('click', (evt) => {
-      if (evt.target.classList.contains('popup_open')) {
-        closeModal(popup)
-      }
-      if (evt.target.classList.contains('popup__close')) {
-        closeModal(popup)
-      }
-    })
-  })
-}
-
-closeModalItem()
-
-
-
 function fillModalForm() {
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
@@ -141,7 +92,7 @@ export function openImagePopup(cardImage, placeTitle) {
   popupCardImage.alt = cardImage.alt;
   popupCardTitle.textContent = placeTitle.textContent;
 
-  openModal(popupIncreaseCard)
+  popupIncreaseCard.open()
 }
 
 
@@ -156,7 +107,7 @@ function handleProfileFormSubmit(evt) {
   profileName.textContent = nameValue;
   profileJob.textContent = jobValue;
 
-  closeModal(popupEditProfile);
+  popupEdit.close()
 }
 
 
@@ -164,7 +115,7 @@ function handleProfileFormSubmit(evt) {
 function handleCardFormSubmit(evt) {
   evt.preventDefault();
 
-  prependCard( {
+  prependCard({
     name: nameCardInput.value,
     link: linkCardInput.value
   });
@@ -174,28 +125,20 @@ function handleCardFormSubmit(evt) {
 
   cardFormValidator.disableButton(popuButton);
 
-  closeModal(popupAddCard);
+  popupCard.close()
 }
+
 
 
 // добавление новой карточки
-function prependCard(data){
-  placesContainer.prepend(createCard(data))
+function prependCard(data) {
+  cardList._renderer(data)
 }
 
 
 
-// создание новой карточки
-function createCard(data) {
-  const placeElement = new Card(data, '.place-template');
-  return placeElement.getNewCardElement();
-}
-
-
-
-// открытие и закрытие модалок
-popupProfileOpenButton.addEventListener('click', () => {openModal(popupEditProfile); fillModalForm()});
-popupCardOpenButton.addEventListener('click', () => openModal(popupAddCard));
+popupProfileOpenButton.addEventListener('click', () => { popupEdit.open(); fillModalForm() });
+popupCardOpenButton.addEventListener('click', () => popupCard.open());
 
 
 
@@ -204,5 +147,25 @@ formEditProfile.addEventListener('submit', handleProfileFormSubmit);
 formCardElement.addEventListener('submit', handleCardFormSubmit);
 
 
-// добавление карточек
-initialCards.reverse().forEach(data => placesContainer.prepend(createCard(data)));
+
+const cardList = new Section(
+  {
+    items: initialCards,
+    renderer: (cardItem) => {
+      const placeElement = new Card(cardItem, '.place-template');   // добавляем экземпляр карточки
+      const cardElement = placeElement.getNewCardElement();         // заполняем карточку
+      cardList.addItem(cardElement);                                // добавляем карточку
+    },
+  },
+  '.places__container'
+);
+
+cardList.renderItems();       // перебираем карточки
+
+
+const popupEdit = new Popup ('.popup_type-edit');
+popupEdit.setEventListeners();
+const popupCard = new Popup ('.popup_type_add-card');
+popupCard.setEventListeners()
+export const popupIncreaseCard = new Popup ('.popup_type_increase-card');
+popupIncreaseCard.setEventListeners()

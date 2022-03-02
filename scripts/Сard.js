@@ -39,11 +39,12 @@ export class Card {
   }
 
 
+
   _setOpenImagePopup(cardImage, placeTitle) {
-    cardImage.addEventListener('click', () => openImagePopup(cardImage, placeTitle));
+    cardImage.addEventListener('click', () => {
+      const PopupImage = new PopupWithImage('.places__container');
+      PopupImage.open(cardImage, placeTitle)});
   }
-
-
 
   _setRemoveCardHandler(element) {
     element
@@ -76,4 +77,5 @@ export class Card {
 
 }
 
-import { openImagePopup } from './index.js'
+// import { openImagePopup } from './index.js'
+import { PopupWithImage } from './PopupWithImage.js';
