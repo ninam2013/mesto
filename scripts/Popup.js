@@ -1,23 +1,26 @@
 export const KEY_ESC = 27;
 
 export class Popup {
-  constructor(popupselector) {
-    this._popupselector = document.querySelector(popupselector)
+  constructor(popupSelector) {
+    this._popupElement = document.querySelector(popupSelector);
+    this.setEventListeners();
   }
 
+  get popupElement () { return this._popupElement }
+
   open() {
-    this._popupselector.classList.add('popup_open');
-    document.addEventListener('keydown', this._handleEscClose.bind(this));
+    this._popupElement.classList.add('popup_open');
+    document.addEventListener('keydown', this._handleEscClose);
   }
 
   close() {
-    this._popupselector.classList.remove('popup_open');
-    document.removeEventListener('keydown', this._handleEscClose.bind(this));
+    this._popupElement.classList.remove('popup_open');
+    document.removeEventListener('keydown', this._handleEscClose);
   }
 
 
 
-  _handleEscClose(evt) {
+  _handleEscClose = (evt) =>  {
     const key = evt.keyCode;
 
     if (key == KEY_ESC) {

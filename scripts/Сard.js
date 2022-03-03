@@ -1,3 +1,5 @@
+import { PopupWithImage } from './PopupWithImage.js';
+
 export class Card {
   constructor(data, cardSelector) {
     this._name = data.name;
@@ -42,8 +44,9 @@ export class Card {
 
   _setOpenImagePopup(cardImage, placeTitle) {
     cardImage.addEventListener('click', () => {
-      const PopupImage = new PopupWithImage('.places__container');
-      PopupImage.open(cardImage, placeTitle)});
+      const popupImage = new PopupWithImage('.popup_type_increase-card');
+      popupImage.open(cardImage, placeTitle)
+    });
   }
 
   _setRemoveCardHandler(element) {
@@ -77,5 +80,4 @@ export class Card {
 
 }
 
-// import { openImagePopup } from './index.js'
-import { PopupWithImage } from './PopupWithImage.js';
+

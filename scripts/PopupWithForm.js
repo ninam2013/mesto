@@ -1,23 +1,35 @@
+import { Popup } from './Popup.js';
+
 export class PopupWithForm extends Popup {
-  constructor(popupselector, submitForm){
-    super(popupselector),
-    this.submitForm = submitForm
+  constructor(popupSelector, submitForm){
+    super(popupSelector);
+    this.submitForm = submitForm;
   }
+
+  get _form () { return this.popupElement.querySelector('form') }
+
+  get _inputsList () { return this._form.querySelectorAll('input[type="text"]') }
+
   _getInputValues() {
-    const nameValue = nameInput.value;
-    const jobValue = jobInput.value;
-
-    profileName.textContent = nameValue;
-    profileJob.textContent = jobValue;
-
-    popupEdit.close()
+    const inputValues = {};
+    this._inputsList.forEach(input => {
+      inputValues[input.name] = input.value;
+    });
+    return inputValues;
   }
 
   setEventListeners(){
-    popupProfileOpenButton.addEventListener('click', () => { popupEdit.open(); fillModalForm() });
-    popupCardOpenButton.addEventListener('click', () => popupCard.open());
+    super.setEventListeners();
 
-    formEditProfile.addEventListener('submit', handleProfileFormSubmit);
-    formCardElement.addEventListener('submit', handleCardFormSubmit);
+    this._form.addEventListener('submit', evt => {
+      evt.preventDefault();
+      this.submitForm(this._getInputValues());
+      this.close();
+    });
+  }
+
+  close () {
+    super.close();
+    this._inputsList.forEach(input => input.value = '');
   }
 }

@@ -1,9 +1,10 @@
 import { Card } from './Сard.js';
 import { Section } from './Section.js';
-import { Popup, KEY_ESC } from './Popup.js';
+// import { PopupWithImage } from './PopupWithImage.js';
+import { PopupWithForm } from './PopupWithForm.js';
 import { FormValidator } from './FormValidator.js';
 
-export const initialCards = [
+const initialCards = [
   {
     name: 'Архыз',
     link: 'https://pictures.s3.yandex.net/frontend-developer/cards-compressed/arkhyz.jpg'
@@ -46,7 +47,6 @@ const placesContainer = document.querySelector('.places__container');
 // модалки
 const popupEditProfile = document.querySelector('.popup_type-edit');
 const popupAddCard = document.querySelector('.popup_type_add-card');
-// const popupIncreaseCard = document.querySelector('.popup_type_increase-card');
 
 // формы
 const formEditProfile = popupEditProfile.querySelector('.popup__form');
@@ -77,7 +77,7 @@ editFormValidator.enableValidation();
 cardFormValidator.enableValidation();
 
 
-
+// заполнение формы последними значениями
 function fillModalForm() {
   nameInput.value = profileName.textContent;
   jobInput.value = profileJob.textContent;
@@ -86,36 +86,17 @@ function fillModalForm() {
 
 
 
-// создание popup карты
-export function openImagePopup(cardImage, placeTitle) {
-  popupCardImage.src = cardImage.src;
-  popupCardImage.alt = cardImage.alt;
-  popupCardTitle.textContent = placeTitle.textContent;
-
-  popupIncreaseCard.open()
-}
-
-
-
 // работа с формами
-function handleProfileFormSubmit(evt) {
-  evt.preventDefault();
-
-  const nameValue = nameInput.value;
-  const jobValue = jobInput.value;
-
-  profileName.textContent = nameValue;
-  profileJob.textContent = jobValue;
-
-  popupEdit.close()
+function handleProfileFormSubmit(inputValues) {
+  profileName.textContent = inputValues.name;    // смена надписи согласно введенным данным в форме
+  profileJob.textContent = inputValues.job;
 }
 
 
 
-function handleCardFormSubmit(evt) {
-  evt.preventDefault();
+function handleCardFormSubmit() {
 
-  prependCard({
+  cardList.renderer({                           // вызов параметра _renderer класса Section для создания карточки
     name: nameCardInput.value,
     link: linkCardInput.value
   });
@@ -123,28 +104,16 @@ function handleCardFormSubmit(evt) {
   nameCardInput.value = '';
   linkCardInput.value = '';
 
-  cardFormValidator.disableButton(popuButton);
+  cardFormValidator.disableButton(popuButton);    //выключение кнопки формы
 
-  popupCard.close()
+  popupCard.close()                               // закрываем popup
 }
 
 
 
-// добавление новой карточки
-function prependCard(data) {
-  cardList._renderer(data)
-}
+popupProfileOpenButton.addEventListener('click', () => { popupEdit.open(); fillModalForm() });    // при клике открывается popup профиля
+popupCardOpenButton.addEventListener('click', () => popupCard.open());                            // при клике открывается popup создания карточки
 
-
-
-popupProfileOpenButton.addEventListener('click', () => { popupEdit.open(); fillModalForm() });
-popupCardOpenButton.addEventListener('click', () => popupCard.open());
-
-
-
-// навешиваем обработчики событий при отправке формы
-formEditProfile.addEventListener('submit', handleProfileFormSubmit);
-formCardElement.addEventListener('submit', handleCardFormSubmit);
 
 
 
@@ -163,9 +132,5 @@ const cardList = new Section(
 cardList.renderItems();       // перебираем карточки
 
 
-const popupEdit = new Popup ('.popup_type-edit');
-popupEdit.setEventListeners();
-const popupCard = new Popup ('.popup_type_add-card');
-popupCard.setEventListeners()
-export const popupIncreaseCard = new Popup ('.popup_type_increase-card');
-popupIncreaseCard.setEventListeners()
+const popupEdit = new PopupWithForm( '.popup_type-edit', handleProfileFormSubmit);
+const popupCard = new PopupWithForm('.popup_type_add-card', handleCardFormSubmit);
