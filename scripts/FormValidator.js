@@ -1,3 +1,4 @@
+//настройка валидации полей форм
 export class FormValidator {
   constructor(config, form) {
     this._form = form;
@@ -5,6 +6,7 @@ export class FormValidator {
   }
 
 
+  // действие по умолчанию не должно выполняться
   _submitForm(event) {
     event.preventDefault();
   }
@@ -22,13 +24,11 @@ export class FormValidator {
   }
 
 
-
   // Проверка корректности поля
   _isFormValid() {
     return this._form.checkValidity();
 
   }
-
 
 
   // включение кнопки формы
@@ -38,13 +38,11 @@ export class FormValidator {
   }
 
 
-
   // выключение кнопки формы
   disableButton(button) {
     button.classList.add(this._config.inactiveButtonClass);
     button.disabled = true;
   }
-
 
 
   // добавление ошибки
@@ -53,7 +51,6 @@ export class FormValidator {
     errorElement.classList.add(this._config.errorClass);
     errorElement.textContent = errorText;
   }
-
 
 
   // удаление ошибки

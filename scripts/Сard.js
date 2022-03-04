@@ -1,14 +1,15 @@
-import { PopupWithImage } from './PopupWithImage.js';
-
+// создание карточки
 export class Card {
-  constructor(data, cardSelector) {
+  constructor(data, cardSelector, handleCardClick) {
+
     this._name = data.name;
     this._link = data.link;
     this._cardSelector = cardSelector;
+    this.handleCardClick = handleCardClick;
   }
 
 
-
+// копируем код с Template и возвращаем элементы
   _getTemplate() {
     const placeTemplate = document.querySelector(this._cardSelector).content;
     const cardElement = placeTemplate.querySelector('.place').cloneNode(true);
@@ -17,7 +18,7 @@ export class Card {
   }
 
 
-
+//получаем новый элемент карты
   getNewCardElement() {
     const element = this._getTemplate();
     const cardImage = element.querySelector('.place__image');
@@ -33,7 +34,7 @@ export class Card {
   }
 
 
-
+  // вызов обработчиков событий
   _setEventListeners(cardImage, placeTitle, element) {
     this._setOpenImagePopup(cardImage, placeTitle);
     this._setLikeHandler(element);
@@ -41,14 +42,15 @@ export class Card {
   }
 
 
-
+  // открытие по клику popup карточки
   _setOpenImagePopup(cardImage, placeTitle) {
     cardImage.addEventListener('click', () => {
-      const popupImage = new PopupWithImage('.popup_type_increase-card');
-      popupImage.open(cardImage, placeTitle)
+      this.handleCardClick(cardImage, placeTitle)
     });
   }
 
+
+  // удаление по клику на иконку карточки
   _setRemoveCardHandler(element) {
     element
       .querySelector('.place__basket')
@@ -59,7 +61,7 @@ export class Card {
   }
 
 
-
+  // установка like по клику
   _setLikeHandler(element) {
     element
       .querySelector('.place__button')
@@ -67,17 +69,14 @@ export class Card {
   }
 
 
-
+  // переключение иконки like
   _toggleLike(evt) {
     evt.target.classList.toggle('place__button_active');
   }
 
 
-
+  // удаление карточки
   _removeCard(cardElement) {
     cardElement.remove('place');
   }
-
 }
-
-

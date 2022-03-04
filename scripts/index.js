@@ -1,7 +1,8 @@
 import { Card } from './Сard.js';
 import { Section } from './Section.js';
-// import { PopupWithImage } from './PopupWithImage.js';
+import { UserInfo } from './UserInfo.js';
 import { PopupWithForm } from './PopupWithForm.js';
+import { PopupWithImage } from './PopupWithImage.js';
 import { FormValidator } from './FormValidator.js';
 
 const initialCards = [
@@ -41,9 +42,6 @@ const config = {
 };
 
 
-// контейнер с карточками
-const placesContainer = document.querySelector('.places__container');
-
 // модалки
 const popupEditProfile = document.querySelector('.popup_type-edit');
 const popupAddCard = document.querySelector('.popup_type_add-card');
@@ -58,45 +56,43 @@ const popupProfileOpenButton = document.querySelector('.profile__button');
 const popupCardOpenButton = document.querySelector('.profile__add-button');
 
 // инпуты
-const nameInput = document.querySelector('.popup__input_js_name');
-const jobInput = document.querySelector('.popup__input_js_job');
 const nameCardInput = document.querySelector('.popup__input_js_card-name');
 const linkCardInput = document.querySelector('.popup__input_js_card-link');
-
-const profileName = document.querySelector('.profile__title');
-const profileJob = document.querySelector('.profile__text');
-
-const popupCardImage = document.querySelector('.popup__img');
-const popupCardTitle = document.querySelector('.popup__title-card');
 
 
 const editFormValidator = new FormValidator(config, formEditProfile);
 const cardFormValidator = new FormValidator(config, formCardElement);
 
+
 editFormValidator.enableValidation();
 cardFormValidator.enableValidation();
+const popupImage = new PopupWithImage('.popup_type_increase-card');
+
+const cardList = new Section(
+  {
+    items: initialCards,
+    renderer: (cardItem) => {
+      const placeElement = new Card(cardItem, '.place-template', (cardImage, placeTitle) => popupImage.open(cardImage, placeTitle));
+      const cardElement = placeElement.getNewCardElement();
+      cardList.addItem(cardElement);
+    },
+  },
+  '.places__container'
+);
+
+cardList.renderItems();
 
 
-// заполнение формы последними значениями
-function fillModalForm() {
-  nameInput.value = profileName.textContent;
-  jobInput.value = profileJob.textContent;
-  editFormValidator.toggleButton()
-}
 
-
-
-// работа с формами
-function handleProfileFormSubmit(inputValues) {
-  profileName.textContent = inputValues.name;    // смена надписи согласно введенным данным в форме
-  profileJob.textContent = inputValues.job;
-}
+const userInfo = new UserInfo({ selectorName: '.profile__title', selectorJob: '.profile__text' }, editFormValidator);
+const popupEdit = new PopupWithForm('.popup_type-edit', userInfo.setUserInfo);
+const popupCard = new PopupWithForm('.popup_type_add-card', handleCardFormSubmit);
 
 
 
 function handleCardFormSubmit() {
 
-  cardList.renderer({                           // вызов параметра _renderer класса Section для создания карточки
+  cardList.renderer({
     name: nameCardInput.value,
     link: linkCardInput.value
   });
@@ -104,33 +100,13 @@ function handleCardFormSubmit() {
   nameCardInput.value = '';
   linkCardInput.value = '';
 
-  cardFormValidator.disableButton(popuButton);    //выключение кнопки формы
+  cardFormValidator.disableButton(popuButton);
 
-  popupCard.close()                               // закрываем popup
+  popupCard.close()
 }
 
 
 
-popupProfileOpenButton.addEventListener('click', () => { popupEdit.open(); fillModalForm() });    // при клике открывается popup профиля
-popupCardOpenButton.addEventListener('click', () => popupCard.open());                            // при клике открывается popup создания карточки
+popupProfileOpenButton.addEventListener('click', () => { popupEdit.open(); userInfo.getUserInfo() });
+popupCardOpenButton.addEventListener('click', () => popupCard.open());
 
-
-
-
-const cardList = new Section(
-  {
-    items: initialCards,
-    renderer: (cardItem) => {
-      const placeElement = new Card(cardItem, '.place-template');   // добавляем экземпляр карточки
-      const cardElement = placeElement.getNewCardElement();         // заполняем карточку
-      cardList.addItem(cardElement);                                // добавляем карточку
-    },
-  },
-  '.places__container'
-);
-
-cardList.renderItems();       // перебираем карточки
-
-
-const popupEdit = new PopupWithForm( '.popup_type-edit', handleProfileFormSubmit);
-const popupCard = new PopupWithForm('.popup_type_add-card', handleCardFormSubmit);
