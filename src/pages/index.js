@@ -1,10 +1,10 @@
-import '../src/index.css';
-import { Card } from './scripts/Сard.js';
-import { Section } from './scripts/Section.js';
-import { UserInfo } from './scripts/UserInfo.js';
-import { PopupWithForm } from './scripts/PopupWithForm.js';
-import { PopupWithImage } from './scripts/PopupWithImage.js';
-import { FormValidator } from './scripts/FormValidator.js';
+import '../../src/pages/index.css';
+import { Card } from '../components/Сard.js';
+import { Section } from '../components/Section.js';
+import { UserInfo } from '../components/UserInfo.js';
+import { PopupWithForm } from '../components/PopupWithForm.js';
+import { PopupWithImage } from '../components/PopupWithImage.js';
+import { FormValidator } from '../components/FormValidator.js';
 
 
 const initialCards = [
@@ -89,25 +89,17 @@ cardList.renderItems();
 
 const userInfo = new UserInfo({ selectorName: '.profile__title', selectorJob: '.profile__text' }, editFormValidator);
 const popupEdit = new PopupWithForm('.popup_type-edit', userInfo.setUserInfo);
-const popupCard = new PopupWithForm('.popup_type_add-card', handleCardFormSubmit);
-
-
-
-function handleCardFormSubmit() {     //даже не могу представить в какой класс поместить
-
+const popupCard = new PopupWithForm('.popup_type_add-card', () => {
   cardList.renderer({
     name: nameCardInput.value,
     link: linkCardInput.value
-  });
-
+  })
   nameCardInput.value = '';
   linkCardInput.value = '';
-
   cardFormValidator.disableButton(popupButton);
-
   popupCard.close()
 }
-
+);
 
 
 popupProfileOpenButton.addEventListener('click', () => {

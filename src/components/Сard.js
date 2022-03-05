@@ -34,6 +34,7 @@ export class Card {
   }
 
 
+
   // вызов обработчиков событий
   _setEventListeners(cardImage, placeTitle, element) {
     this._setOpenImagePopup(cardImage, placeTitle);
