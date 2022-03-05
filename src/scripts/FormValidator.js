@@ -12,15 +12,21 @@ export class FormValidator {
   }
 
 
+// обработка ошибок формы
+  processFormErrors () {
+    this._form.querySelectorAll(this._config.inputSelector).forEach(input => this._validateInput(input));
+  }
+
+
   // Открытие и закрытие кнопки ввода формы
   toggleButton() {
     const button = this._form.querySelector(this._config.submitButtonSelector);
-
     if (this._isFormValid(this._form)) {
       this._enableButton(button)
     } else {
       this.disableButton(button)
     }
+
   }
 
 
@@ -90,7 +96,6 @@ export class FormValidator {
         this._validateInput(inputElement);
       });
     });
-    this.toggleButton(this._form);
   }
 
 

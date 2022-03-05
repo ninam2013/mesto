@@ -1,9 +1,11 @@
-import { Card } from './Сard.js';
-import { Section } from './Section.js';
-import { UserInfo } from './UserInfo.js';
-import { PopupWithForm } from './PopupWithForm.js';
-import { PopupWithImage } from './PopupWithImage.js';
-import { FormValidator } from './FormValidator.js';
+import '../src/index.css';
+import { Card } from './scripts/Сard.js';
+import { Section } from './scripts/Section.js';
+import { UserInfo } from './scripts/UserInfo.js';
+import { PopupWithForm } from './scripts/PopupWithForm.js';
+import { PopupWithImage } from './scripts/PopupWithImage.js';
+import { FormValidator } from './scripts/FormValidator.js';
+
 
 const initialCards = [
   {
@@ -51,7 +53,7 @@ const formEditProfile = popupEditProfile.querySelector('.popup__form');
 const formCardElement = popupAddCard.querySelector('.popup__form');
 
 //кнопки
-const popuButton = document.querySelector('.popup__button_js_card-submit');
+const popupButton = document.querySelector('.popup__button_js_card-submit');
 const popupProfileOpenButton = document.querySelector('.profile__button');
 const popupCardOpenButton = document.querySelector('.profile__add-button');
 
@@ -66,6 +68,7 @@ const cardFormValidator = new FormValidator(config, formCardElement);
 
 editFormValidator.enableValidation();
 cardFormValidator.enableValidation();
+
 const popupImage = new PopupWithImage('.popup_type_increase-card');
 
 const cardList = new Section(
@@ -90,7 +93,7 @@ const popupCard = new PopupWithForm('.popup_type_add-card', handleCardFormSubmit
 
 
 
-function handleCardFormSubmit() {
+function handleCardFormSubmit() {     //даже не могу представить в какой класс поместить
 
   cardList.renderer({
     name: nameCardInput.value,
@@ -100,13 +103,17 @@ function handleCardFormSubmit() {
   nameCardInput.value = '';
   linkCardInput.value = '';
 
-  cardFormValidator.disableButton(popuButton);
+  cardFormValidator.disableButton(popupButton);
 
   popupCard.close()
 }
 
 
 
-popupProfileOpenButton.addEventListener('click', () => { popupEdit.open(); userInfo.getUserInfo() });
+popupProfileOpenButton.addEventListener('click', () => {
+  popupEdit.open();
+  popupEdit.setInputValues(userInfo.getUserInfo());
+  editFormValidator.processFormErrors();
+});
 popupCardOpenButton.addEventListener('click', () => popupCard.open());
 

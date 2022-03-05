@@ -7,13 +7,12 @@ export class UserInfo {
   }
 
 
-  // вывод последней записи в поля формы
+  // возврат объекта с данными профиля
   getUserInfo() {
-    const nameInput = document.querySelector('.popup__input_js_name');
-    const jobInput = document.querySelector('.popup__input_js_job');
-    nameInput.value = this._profileName.textContent;
-    jobInput.value = this._profileJob.textContent;
-    this._validator.toggleButton()
+    return {
+      name: this._profileName.textContent,
+      job: this._profileJob.textContent
+    }
   }
 
 

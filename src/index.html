@@ -4,7 +4,6 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link href="pages/index.css" rel="stylesheet">
   <title>Места России</title>
 </head>
 
@@ -16,7 +15,7 @@
     <main class="main">
       <section class="profile">
         <div class="profile__info">
-          <img class="profile__image" src="images/face.jpg" alt="лицо профиля">
+          <img class="profile__image" src="<%=require('/src/images/face.jpg')%>" alt="лицо профиля">
           <div class="profile__desc">
             <div class="profile__name">
               <h1 class="profile__title">Жак-Ив-Кусто</h1>
@@ -88,10 +87,6 @@
       <p class="footer__copyright">© 2021 Mesto Russia</p>
     </footer>
   </div>
-
-
-  <script type="module" src="scripts/index.js"></script>
-
 </body>
 
 </html>

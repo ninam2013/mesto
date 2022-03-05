@@ -79,4 +79,5 @@ export class Card {
   _removeCard(cardElement) {
     cardElement.remove('place');
   }
+
 }
