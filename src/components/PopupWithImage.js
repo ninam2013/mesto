@@ -4,16 +4,15 @@ import { Popup } from "./Popup.js";
 export class PopupWithImage extends Popup {
   constructor(popupselector){
     super (popupselector)
-
+    this._cardImage = document.querySelector('.popup__img');
+    this._placeTitle = document.querySelector('.popup__title-card');
   }
 
   open(cardImage, placeTitle){
     super.open();
-    const popupCardImage = document.querySelector('.popup__img');
-    const popupCardTitle = document.querySelector('.popup__title-card');
-    popupCardImage.src = cardImage.src;
-    popupCardImage.alt = cardImage.alt;
-    popupCardTitle.textContent = placeTitle.textContent;
+
+    this._cardImage.src = cardImage.src;
+    this._cardImage.alt = cardImage.alt;
+    this._placeTitle.textContent = placeTitle.textContent;
   }
 }
-

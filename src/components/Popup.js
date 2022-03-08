@@ -4,10 +4,9 @@ const KEY_ESC = 27;
 export class Popup {
   constructor(popupSelector) {
     this._popupElement = document.querySelector(popupSelector);
-    this.setEventListeners();
+    // this.setEventListeners();
+    this._handleEscClose = this._handleEscClose.bind(this);
   }
-
-  get popupElement() { return this._popupElement }
 
 
   // открывает popup
@@ -24,7 +23,7 @@ export class Popup {
   }
 
 
-// закрывает popup нажатием на Esc
+  // закрывает popup нажатием на Esc
   _handleEscClose = (evt) => {
     const key = evt.keyCode;
 
@@ -34,20 +33,15 @@ export class Popup {
   }
 
 
-// перебираются popup и при нажатии на крестик если они открыты закрываются
+
   setEventListeners() {
-    const popups = document.querySelectorAll('.popup')
-
-    popups.forEach((popup) => {
-
-      popup.addEventListener('click', (evt) => {
-        if (evt.target.classList.contains('popup_open')) {
-          this.close()
-        }
-        if (evt.target.classList.contains('popup__close')) {
-          this.close()
-        }
-      })
+    this._popupElement.addEventListener('mousedown', (evt) => {
+      if (evt.target.classList.contains('popup_open')) {
+        this.close()
+      }
+      if (evt.target.classList.contains('popup__close')) {
+        this.close()
+      }
     })
   }
 }

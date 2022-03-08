@@ -3,6 +3,8 @@ export class FormValidator {
   constructor(config, form) {
     this._form = form;
     this._config = config;
+    this._inputList = this._form.querySelectorAll(this._config.inputSelector);
+    this._submitButton = this._form.querySelector(this._config.submitButtonSelector)
   }
 
 
@@ -12,19 +14,18 @@ export class FormValidator {
   }
 
 
-// обработка ошибок формы
-  processFormErrors () {
-    this._form.querySelectorAll(this._config.inputSelector).forEach(input => this._validateInput(input));
+  // обработка ошибок формы
+  processFormErrors() {
+    this._inputList.forEach(input => this._validateInput(input))
   }
 
 
   // Открытие и закрытие кнопки ввода формы
   toggleButton() {
-    const button = this._form.querySelector(this._config.submitButtonSelector);
     if (this._isFormValid(this._form)) {
-      this._enableButton(button)
+      this._enableButton(this._submitButton)
     } else {
-      this.disableButton(button)
+      this.disableButton(this._submitButton)
     }
 
   }
@@ -38,16 +39,16 @@ export class FormValidator {
 
 
   // включение кнопки формы
-  _enableButton(button) {
-    button.classList.remove(this._config.inactiveButtonClass);
-    button.disabled = false;
+  _enableButton() {
+    this._submitButton.classList.remove(this._config.inactiveButtonClass);
+    this._submitButton.disabled = false;
   }
 
 
   // выключение кнопки формы
-  disableButton(button) {
-    button.classList.add(this._config.inactiveButtonClass);
-    button.disabled = true;
+  disableButton() {
+    this._submitButton.classList.add(this._config.inactiveButtonClass);
+    this._submitButton.disabled = true;
   }
 
 
@@ -87,9 +88,8 @@ export class FormValidator {
 
   // перебираем поля и вызываем функцию валидации полей
   _setEventListeners() {
-
     this._inputs = this._form.querySelectorAll(this._config.inputSelector);
-
+    this.toggleButton();
     this._inputs.forEach(inputElement => {
 
       inputElement.addEventListener('input', () => {
@@ -104,5 +104,4 @@ export class FormValidator {
     this._form.addEventListener('submit', this._submitForm);
     this._setEventListeners();
   }
-
 }

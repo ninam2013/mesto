@@ -6,6 +6,9 @@ export class Card {
     this._link = data.link;
     this._cardSelector = cardSelector;
     this.handleCardClick = handleCardClick;
+    this._element = this._getTemplate();
+    this._cardImage = this._element.querySelector('.place__image');
+    this._placeTitle = this._element.querySelector('.place__title');
   }
 
 
@@ -20,51 +23,47 @@ export class Card {
 
 //получаем новый элемент карты
   getNewCardElement() {
-    const element = this._getTemplate();
-    const cardImage = element.querySelector('.place__image');
-    const placeTitle = element.querySelector('.place__title');
+    this._cardImage.src = this._link;
+    this._cardImage.alt = 'карточка ' + this._name;
+    this._placeTitle.textContent = this._name;
 
-    cardImage.src = this._link;
-    cardImage.alt = 'карточка ' + this._name;
-    placeTitle.textContent = this._name;
+    this._setEventListeners(this._cardImage, this._placeTitle)
 
-    this._setEventListeners(cardImage, placeTitle, element)
-
-    return element;
+    return this._element;
   }
 
 
 
   // вызов обработчиков событий
-  _setEventListeners(cardImage, placeTitle, element) {
-    this._setOpenImagePopup(cardImage, placeTitle);
-    this._setLikeHandler(element);
-    this._setRemoveCardHandler(element);
+  _setEventListeners() {
+    this._setOpenImagePopup();
+    this._setLikeHandler();
+    this._setRemoveCardHandler();
   }
 
 
   // открытие по клику popup карточки
-  _setOpenImagePopup(cardImage, placeTitle) {
-    cardImage.addEventListener('click', () => {
-      this.handleCardClick(cardImage, placeTitle)
+  _setOpenImagePopup() {
+    this._cardImage.addEventListener('click', () => {
+      this.handleCardClick(this._cardImage, this._placeTitle)
     });
   }
 
 
   // удаление по клику на иконку карточки
-  _setRemoveCardHandler(element) {
-    element
+  _setRemoveCardHandler() {
+    this._element
       .querySelector('.place__basket')
       .addEventListener(
         'click',
-        () => this._removeCard(element)
+        () => this._removeCard()
       );
   }
 
 
   // установка like по клику
-  _setLikeHandler(element) {
-    element
+  _setLikeHandler() {
+    this._element
       .querySelector('.place__button')
       .addEventListener('click', this._toggleLike);
   }
@@ -77,8 +76,7 @@ export class Card {
 
 
   // удаление карточки
-  _removeCard(cardElement) {
-    cardElement.remove('place');
+  _removeCard() {
+    this._element.remove('place');
   }
-
 }

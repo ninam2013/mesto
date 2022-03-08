@@ -1,9 +1,8 @@
 // управление отображением информации о пользователе на странице
 export class UserInfo {
-  constructor({ selectorName, selectorJob }, validator) {
+  constructor({ selectorName, selectorJob }) {
     this._profileName = document.querySelector(selectorName);
     this._profileJob = document.querySelector(selectorJob);
-    this._validator = validator
   }
 
 
@@ -20,7 +19,5 @@ export class UserInfo {
   setUserInfo = (inputValues) => {
     this._profileName.textContent = inputValues.name;
     this._profileJob.textContent = inputValues.job;
-
   }
-
 }
