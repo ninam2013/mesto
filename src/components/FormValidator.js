@@ -23,9 +23,9 @@ export class FormValidator {
   // Открытие и закрытие кнопки ввода формы
   toggleButton() {
     if (this._isFormValid(this._form)) {
-      this._enableButton(this._submitButton)
+      this._enableButton()
     } else {
-      this.disableButton(this._submitButton)
+      this.disableButton()
     }
 
   }
@@ -81,16 +81,15 @@ export class FormValidator {
     } else {
       this._showError(inputElement, errorElement, errorText);
     }
-    this.toggleButton(this._form);
+    this.toggleButton();
 
   }
 
 
   // перебираем поля и вызываем функцию валидации полей
   _setEventListeners() {
-    this._inputs = this._form.querySelectorAll(this._config.inputSelector);
     this.toggleButton();
-    this._inputs.forEach(inputElement => {
+    this._inputList.forEach(inputElement => {
 
       inputElement.addEventListener('input', () => {
         this._validateInput(inputElement);
