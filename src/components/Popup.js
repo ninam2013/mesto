@@ -4,7 +4,6 @@ const KEY_ESC = 27;
 export class Popup {
   constructor(popupSelector) {
     this._popupElement = document.querySelector(popupSelector);
-    // this.setEventListeners();
     this._handleEscClose = this._handleEscClose.bind(this);
   }
 

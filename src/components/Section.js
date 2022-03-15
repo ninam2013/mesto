@@ -7,10 +7,10 @@ export class Section {
   }
 
 
-  // перебор карточек
-  renderItems() {
-    this._renderedItems.reverse().forEach(item => this.renderer(item));
-  }
+  // перебор карточек   //  уже не надо так как старых карточек уже нет
+  // renderItems() {
+  //   this._renderedItems.reverse().forEach(item => this.renderer(item));
+  // }
 
 
 // добавляет карточки в начало
