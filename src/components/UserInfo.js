@@ -16,10 +16,16 @@ export class UserInfo {
   }
 
 
+  getUserId() {
+    return this._id;
+  }
+
+
   // смена надписи согласно введенным данным в форме
-  setUserInfo = ({name, job}) => {
-    this._api.editProfile({name:name, about:job});
+  setUserInfo = ({ name, job, id }) => {
+    this._api.editProfile({ name: name, about: job });
     this._profileName.textContent = name;
     this._profileJob.textContent = job;
+    this._id = id
   }
 }

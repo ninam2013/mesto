@@ -60,6 +60,16 @@
 
         </div>
       </section>
+
+      <section class="popup popup_type_delete-confirm">
+        <div class="popup__container">
+          <h2 class="popup__title">Вы уверены?</h2>
+          <form class="popup__form" name="form-popup" novalidate>
+            <button type="submit" class="popup__button popup__button_js_card-submit margin-top">Да</button>
+          </form>
+        </div>
+      </section>
+
       <section class="popup popup_type_increase-card">
 
         <div class="popup__container-card">
@@ -68,14 +78,20 @@
           <h2 class="popup__title-card"></h2>
         </div>
       </section>
+
       <section class="places">
         <ul class="places__container">
           <template class="place-template">
             <li class="place">
               <img class="place__image" src=" " alt=" ">
               <div class="place__info">
-                <h2 class="place__title"></h2>
-                <button type="button" class="place__button"></button>
+                <div class="place__box-name">
+                  <h2 class="place__title"></h2>
+                </div>
+                <div class="place__box-likes">
+                  <button type="button" class="place__button"></button>
+                  <span class="place__count"></span>
+                </div>
                 <button type="button" class="place__basket"></button>
               </div>
             </li>

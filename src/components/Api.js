@@ -4,20 +4,32 @@ class Api {
     this._headers = headers
   }
 
+
+  //подгрузка информации пользователя с сервера
   getProfile() {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers
     })
-      .then(res => res.json())
+      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
+
+  //подгрузка карточек с сервера
   getInitialCard() {
     return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers,
     })
-      .then(res => res.json())
+      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+      .catch((err) => {
+        console.log(err);
+      });
   }
 
+
+  //отредактированные данные профиля сохраняться на сервере
   editProfile({ name, about }) {
     return fetch(`${this._baseUrl}/users/me`, {
       method: "PATCH",
@@ -27,7 +39,65 @@ class Api {
         about
       })
     })
-      .then(res => res.json())
+      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+
+  //добавление новой карточки на сервер
+  addCard(name, link) {
+    return fetch(`${this._baseUrl}/cards`, {
+      method: "POST",
+      headers: this._headers,
+      body: JSON.stringify({
+        name,
+        link
+      })
+    })
+      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+
+  //удаление карточки
+  deleteCard(id) {
+    return fetch(`${this._baseUrl}/cards/${id}`, {
+      method: "DELETE",
+      headers: this._headers
+    })
+      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  //добавление лайков
+  addLike(id) {
+    return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+      method: "PUT",
+      headers: this._headers
+    })
+      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+
+  //удаление лайков
+  deleteLike(id) {
+    return fetch(`${this._baseUrl}/cards/${id}/likes`, {
+      method: "DELETE",
+      headers: this._headers
+    })
+      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+      .catch((err) => {
+        console.log(err);
+      });
   }
 }
 

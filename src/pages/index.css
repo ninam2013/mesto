@@ -19,8 +19,11 @@
 @import url(/src/blocks/place/place.css);
 @import url(/src/blocks/place/__image/place__image.css);
 @import url(/src/blocks/place/__info/place__info.css);
+@import url(/src/blocks/place/__box-name/place__box-name.css);
 @import url(/src/blocks/place/__title/place__title.css);
+@import url(/src/blocks/place/__box-likes/place__box-likes.css);
 @import url(/src/blocks/place/__button/place__button.css);
+@import url(/src/blocks/place/__count/place__count.css);
 @import url(/src/blocks/place/__button/_active/place__button_active.css);
 @import url(/src/blocks/place/__basket/place__basket.css);
 @import url(/src/blocks/footer/footer.css);
@@ -40,3 +43,4 @@
 @import url(/src/blocks/popup/__title-card/popup__title-card.css);
 @import url(/src/blocks/popup/__error/popup__error.css);
 @import url(/src/blocks/popup/__error/_visible/popup__error_visible.css);
+@import url(/src/blocks/margin-top/margin-top.css);

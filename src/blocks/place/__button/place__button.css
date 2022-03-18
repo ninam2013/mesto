@@ -1,7 +1,6 @@
 .place__button {
 	width: 22px;
 	height: 19px;
-	align-self: center;
 	background-color: transparent;
 	background-image: url(../../../images/heart.svg);
 	background-repeat: no-repeat;
@@ -10,8 +9,6 @@
 	cursor: pointer;
 	box-sizing: border-box;
 	transition: opacity .8s;
-	margin-right: 20px;
-	padding-left: 20px;
 }
 
 .place__button:hover {
