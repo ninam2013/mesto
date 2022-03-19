@@ -92,6 +92,7 @@ const popupEdit = new PopupWithForm('.popup_type-edit', (name, job) => {
   popupEdit.renderLoading(true);
   userInfo.setUserInfo(name, job);
   popupEdit.renderLoading(false);
+  popupEdit.close()
 });
 
 
