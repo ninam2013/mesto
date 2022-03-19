@@ -13,9 +13,11 @@
       <div class="header__logo"></div>
     </header>
     <main class="main">
+
       <section class="profile">
         <div class="profile__info">
-          <img class="profile__image" src="<%=require('/src/images/face.jpg')%>" alt="лицо профиля">
+          <button class="profile__button-avatar"></button>
+          <img class="profile__image" src="#" alt="лицо профиля">
           <div class="profile__desc">
             <div class="profile__name">
               <h1 class="profile__title"></h1>
@@ -26,6 +28,7 @@
         </div>
         <button class="profile__add-button" type="button"></button>
       </section>
+
       <section class="popup popup_type-edit">
 
         <div class="popup__container">
@@ -55,17 +58,8 @@
             <input id="link-input" class="popup__input popup__input_js_card-link" type="url" name="link"
               placeholder="Ссылка на картинку" required>
             <span class="link-input-error popup__error"></span>
-            <button type="submit" class="popup__button popup__button_js_card-submit">Создать</button>
-          </form>
-
-        </div>
-      </section>
-
-      <section class="popup popup_type_delete-confirm">
-        <div class="popup__container">
-          <h2 class="popup__title">Вы уверены?</h2>
-          <form class="popup__form" name="form-popup" novalidate>
-            <button type="submit" class="popup__button popup__button_js_card-submit margin-top">Да</button>
+            <button type="submit" class="popup__button popup__button_js_card-submit"
+              data-loading="Создание...">Создать</button>
           </form>
         </div>
       </section>
@@ -76,6 +70,32 @@
           <button class="popup__close" type="button"></button>
           <img class="popup__img" src=" " alt=" ">
           <h2 class="popup__title-card"></h2>
+        </div>
+      </section>
+
+      <section class="popup popup_type_delete-confirm">
+
+        <div class="popup__container">
+          <button class="popup__close" type="button"></button>
+          <h2 class="popup__title">Вы уверены?</h2>
+          <form class="popup__form" name="form-popup" novalidate>
+            <button type="submit" class="popup__button popup__button_js_card-submit margin-top">Да</button>
+          </form>
+        </div>
+      </section>
+
+      <section class="popup popup_type_avatar">
+
+        <div class="popup__container">
+          <button class="popup__close" type="button"></button>
+          <h2 class="popup__title">Обновить аватар</h2>
+          <form class="popup__form" name="form-popup" novalidate>
+            <input id="link-input" class="popup__input popup__input_js_card-link" type="url" name="link"
+              placeholder="Ссылка на картинку" required>
+            <span class="link-input-error popup__error"></span>
+
+            <button type="submit" class="popup__button popup__button_js_card-submit margin-top">Сохранить</button>
+          </form>
         </div>
       </section>
 

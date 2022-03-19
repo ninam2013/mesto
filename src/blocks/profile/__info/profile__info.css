@@ -1,5 +1,6 @@
 .profile__info {
 	flex-grow: 1;
+  position: relative;
 	display: flex;
 	color: #fff;
 	align-items: center;

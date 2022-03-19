@@ -1,7 +1,4 @@
-export { config, formEditProfile, formCardElement, popupButton, popupProfileOpenButton,
-  popupCardOpenButton, nameCardInput, linkCardInput };
-
-const config = {
+export const config = {
   formSelector: '.popup__form',
   inputSelector: '.popup__input',
   submitButtonSelector: '.popup__button',
@@ -14,16 +11,19 @@ const config = {
 // модалки
 const popupEditProfile = document.querySelector('.popup_type-edit');
 const popupAddCard = document.querySelector('.popup_type_add-card');
+const popupAddAvatar = document.querySelector('.popup_type_avatar');
 
 // формы
-const formEditProfile = popupEditProfile.querySelector('.popup__form');
-const formCardElement = popupAddCard.querySelector('.popup__form');
+export const formEditProfile = popupEditProfile.querySelector('.popup__form');
+export const formCardElement = popupAddCard.querySelector('.popup__form');
+export const formAvatarElement = popupAddAvatar.querySelector('.popup__form');
 
 //кнопки
-const popupButton = document.querySelector('.popup__button_js_card-submit');
-const popupProfileOpenButton = document.querySelector('.profile__button');
-const popupCardOpenButton = document.querySelector('.profile__add-button');
+export const popupButton = document.querySelector('.popup__button_js_card-submit');
+export const popupProfileOpenButton = document.querySelector('.profile__button');
+export const popupCardOpenButton = document.querySelector('.profile__add-button');
+export const editButton = document.querySelector('.profile__button-avatar');
 
 // инпуты
-const nameCardInput = document.querySelector('.popup__input_js_card-name');
-const linkCardInput = document.querySelector('.popup__input_js_card-link');
+export const nameCardInput = document.querySelector('.popup__input_js_card-name');
+export const linkCardInput = document.querySelector('.popup__input_js_card-link');

@@ -1,9 +1,9 @@
 // управление отображением информации о пользователе на странице
 export class UserInfo {
-  constructor({ selectorName, selectorJob, api }) {
+  constructor({ selectorName, selectorJob, selectorAvatar }) {
     this._profileName = document.querySelector(selectorName);
     this._profileJob = document.querySelector(selectorJob);
-    this._api = api
+    this._profileAvatar = document.querySelector(selectorAvatar)
   }
 
 
@@ -22,10 +22,10 @@ export class UserInfo {
 
 
   // смена надписи согласно введенным данным в форме
-  setUserInfo = ({ name, job, id }) => {
-    this._api.editProfile({ name: name, about: job });
-    this._profileName.textContent = name;
-    this._profileJob.textContent = job;
-    this._id = id
+  setUserInfo = ({ name = false, job = false, id = false, avatar = false }) => {
+    if (name)   this._profileName.textContent = name;
+    if (job)    this._profileJob.textContent = job;
+    if (id)     this._id = id;
+    if (avatar) this._profileAvatar.src = avatar
   }
 }

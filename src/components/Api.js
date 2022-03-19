@@ -10,7 +10,7 @@ class Api {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}  в данных профиля`))
       .catch((err) => {
         console.log(err);
       });
@@ -22,7 +22,7 @@ class Api {
     return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers,
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status} при загрузке карточек с сервера`))
       .catch((err) => {
         console.log(err);
       });
@@ -39,7 +39,7 @@ class Api {
         about
       })
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status} при смене информации профиля`))
       .catch((err) => {
         console.log(err);
       });
@@ -56,7 +56,7 @@ class Api {
         link
       })
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status} при создании карточки`))
       .catch((err) => {
         console.log(err);
       });
@@ -69,7 +69,7 @@ class Api {
       method: "DELETE",
       headers: this._headers
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status} при удаление карточки`))
       .catch((err) => {
         console.log(err);
       });
@@ -81,7 +81,7 @@ class Api {
       method: "PUT",
       headers: this._headers
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status} при добавлении лайка`))
       .catch((err) => {
         console.log(err);
       });
@@ -94,7 +94,22 @@ class Api {
       method: "DELETE",
       headers: this._headers
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`))
+      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status} при удалении лайка`))
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  //замена фото
+  editAvatar(avatar) {
+    return fetch(`${this._baseUrl}/users/me/avatar`, {
+      method: 'PATCH',
+      headers: this._headers,
+      body: JSON.stringify({
+        avatar: avatar.link
+      })
+    })
+      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status} при замене фото аватара`))
       .catch((err) => {
         console.log(err);
       });
