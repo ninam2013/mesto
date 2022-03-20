@@ -19,9 +19,9 @@ import { PopupWithConfirmation } from '../components/PopupWithConfirmation.js';
 
 
 Promise.all([api.getProfile(), api.getInitialCard()])
-  .then(([res, card]) => {
+  .then(([res, cards]) => {
     userInfo.setUserInfo({ name: res.name, job: res.about, id: res._id, avatar: res.avatar });
-    cardList.renderItems(card)
+    cardList.renderItems(cards)
   })
   .catch((err) => {
     console.log(`${err} при загрузке данных с сервера`);
@@ -44,7 +44,7 @@ const popupImage = new PopupWithImage('.popup_type_increase-card');
 const userInfo = new UserInfo({ selectorName: '.profile__title', selectorJob: '.profile__text', api, selectorAvatar: '.profile__image' });
 
 
-const createCard = (cardItem) => {                // в проектной 8 спринта чётко написано было, что в index.js не должно остаться функций. Что я и сделал, а теперь вернул обратно. Мартышкин труд, однако.
+const createCard = (cardItem) => {
   const placeElement = new Card(cardItem,
     '.place-template',
     (cardImage, placeTitle) => popupImage.open(cardImage, placeTitle),
@@ -103,14 +103,15 @@ const popupEdit = new PopupWithForm('.popup_type-edit', ({ name, job }) => {
 
   api.editProfile({ name: name, about: job })
     .then((res) => {
-
       userInfo.setUserInfo({ name: res.name, about: res.job });
+      popupEdit.close()
     })
     .catch((err) => {
       console.log(`${err} при смене данных профиля`);
     })
-  popupEdit.renderLoading(false);
-  popupEdit.close()
+    .finally(() => {
+      popupEdit.renderLoading(false);
+    })
 });
 
 
@@ -120,15 +121,13 @@ const popupCard = new PopupWithForm('.popup_type_add-card', (inputValues) => {
     .then((res) => {
       cardList.insertElementPrepend(createCard(res))
       cardFormValidator.toggleButton();
-      if (res) {
-        popupCard.close();
-      }
+      popupCard.close();
     })
     .catch((err) => {
       console.log(`${err} при создании карточки`);
     })
     .finally(() => {
-      avatarPopup.renderLoading(false);
+      popupCard.renderLoading(false);
     })
 }
 );
@@ -141,9 +140,7 @@ const avatarPopup = new PopupWithForm(
     api.editAvatar(data)
       .then((res) => {
         userInfo.setUserInfo({ avatar: data.link });
-        if (res) {
-          avatarPopup.close();
-        }
+        avatarPopup.close();
       })
       .catch((err) => {
         console.log(`${err} при замене фото аватара`);
