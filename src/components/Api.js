@@ -4,16 +4,21 @@ class Api {
     this._headers = headers
   }
 
+  //получение ответа от сервера
+  _getResponse(res) {
+    if (res.ok) {
+      return res.json()
+    } else {
+      return Promise.reject(`Ошибка: ${res.status}`)
+    }
+  }
 
   //подгрузка информации пользователя с сервера
   getProfile() {
     return fetch(`${this._baseUrl}/users/me`, {
       headers: this._headers
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}  в данных профиля`))
-      .catch((err) => {
-        console.log(err);
-      });
+      .then(this._getResponse)
   }
 
 
@@ -22,10 +27,7 @@ class Api {
     return fetch(`${this._baseUrl}/cards`, {
       headers: this._headers,
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status} при загрузке карточек с сервера`))
-      .catch((err) => {
-        console.log(err);
-      });
+      .then(this._getResponse)
   }
 
 
@@ -39,10 +41,7 @@ class Api {
         about
       })
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status} при смене информации профиля`))
-      .catch((err) => {
-        console.log(err);
-      });
+      .then(this._getResponse)
   }
 
 
@@ -56,10 +55,7 @@ class Api {
         link
       })
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status} при создании карточки`))
-      .catch((err) => {
-        console.log(err);
-      });
+      .then(this._getResponse)
   }
 
 
@@ -69,10 +65,7 @@ class Api {
       method: "DELETE",
       headers: this._headers
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status} при удаление карточки`))
-      .catch((err) => {
-        console.log(err);
-      });
+      .then(this._getResponse)
   }
 
   //добавление лайков
@@ -81,10 +74,7 @@ class Api {
       method: "PUT",
       headers: this._headers
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status} при добавлении лайка`))
-      .catch((err) => {
-        console.log(err);
-      });
+      .then(this._getResponse)
   }
 
 
@@ -94,10 +84,7 @@ class Api {
       method: "DELETE",
       headers: this._headers
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status} при удалении лайка`))
-      .catch((err) => {
-        console.log(err);
-      });
+      .then(this._getResponse)
   }
 
   //замена фото
@@ -109,10 +96,7 @@ class Api {
         avatar: avatar.link
       })
     })
-      .then(res => res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status} при замене фото аватара`))
-      .catch((err) => {
-        console.log(err);
-      });
+      .then(this._getResponse)
   }
 }
 
